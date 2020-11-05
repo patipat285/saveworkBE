@@ -1,0 +1,197 @@
+{
+    "apps": [
+        {
+            "exec_mode": "fork",
+            "instances": 1,
+            "script": "app.js",
+            "name": "savework-dev-3000",
+            "interpreter": "node",
+            "env": {
+                "server": {
+                    "cert": "./cert/server.crt",
+                    "key": "./cert/server.key",
+                    "use_https": false,
+                    "app_port": "3000",
+                    "app_host": "0.0.0.0",
+                    "health_check_url": [
+                        "/healthcheck"
+                    ]
+                },
+                "service": {
+                    "mongo": {
+                        "default": {
+                            "conn_type": "mongodb",
+                            "ip": "10.1.2.146",
+                            "port": "27017",
+                            "db": "polaris",
+                            "max_retry": 0,
+                            "timeout": 4,
+                            "retry_condition": "CONNECTION_ERROR",
+                            "connection_string": {
+                                "reconnectInterval": 10000,
+                                "connectTimeoutMS": 10000
+                            }
+                        }
+                    },
+                    "ADMD": {
+                        "loginB2C": {
+                            "conn_type": "http",
+                            "ip": "localhost",
+                            "port": "2880",
+                            "path": "/auth/v3.1/oauth/token"
+                        },
+                        "forwordApi": {
+                            "conn_type": "http",
+                            "ip": "localhost",
+                            "port": "2880",
+                            "path": "/polaris/v1/test"
+                        }
+                    }
+                },
+                "app": {
+                    "b2c": {
+                        "clientId": "LtaNkWv+C/rs3nO/V+7DXKRDfFOpFBMyEkcDNIp9gJ/uhM+DAzuhRQ==",
+                        "clientSecret": "clientSecret",
+                        "grantType": "authorization_code",
+                        "redirectUri": "http://localhost:4000/#/callback"
+                    },
+                    "errorMessage": {
+                        "success": {
+                            "resultCode": "20000",
+                            "resultDescription": "Success"
+                        },
+                        "systemError": {
+                            "resultCode": "50000",
+                            "resultDescription": "System Error"
+                        },
+                        "timeout": {
+                            "resultCode": "50004",
+                            "resultDescription": "Connection timeout"
+                        },
+                        "reject": {
+                            "resultCode": "50003",
+                            "resultDescription": "Connection error"
+                        },
+                        "dbError": {
+                            "resultCode": "50001",
+                            "resultDescription": "db_error"
+                        },
+                        "sessionExpired": {
+                            "resultCode": "40103",
+                            "resultDescription": "Session was expired"
+                        },
+                        "urlNotFound": {
+                            "resultCode": "40400",
+                            "resultDescription": "Unknown URL"
+                        },
+                        "missing": {
+                            "resultCode": "40300",
+                            "resultDescription": "Missing or invalid parameter"
+                        },
+                        "dataNotFound": {
+                            "resultCode": "40401",
+                            "resultDescription": "Data not found"
+                        }
+                    },
+                    "constants": {
+                        "REQUEST": "Request",
+                        "RESPONSE": "Response",
+                        "SUCCESS": "Success",
+                        "ERROR": "Error",
+                        "FAIL": "Fail",
+                        "URLKEYWORD": [
+                            "filter",
+                            "offset",
+                            "orderby",
+                            "limit",
+                            "fields"
+                        ],
+                        "METHOD": {
+                            "GET": "GET",
+                            "POST": "POST",
+                            "PUT": "PUT",
+                            "DELETE": "DELETE"
+                        },
+                        "MONGOCMD": {
+                            "GET": "SEARCH",
+                            "POST": "INSERT",
+                            "PUT": "UPDATE",
+                            "DELETE": "DELETE"
+                        },
+                        "STATS": {
+                            "SUCCESS": "Success",
+                            "TIMEOUT": "Timeout",
+                            "REJECT": "Reject",
+                            "ERROR": "Error",
+                            "DATA_EXIST": "Data Exist",
+                            "DATA_NOT_FOUND": "Data Not Found"
+                        }
+                    },
+                    "keyValidate": {
+                        "authorization": {
+                            "query": [
+                                "code"
+                            ]
+                        },
+                        "checkTokenExpire": {
+                            "query": [
+                                "session_id"
+                            ]
+                        }
+                    }
+                },
+                "commonRod": {
+                    "body_parser_limit": "1mb"
+                },
+                "commonLog": {
+                    "projectName": "POLARIS",
+                    "log": {
+                        "time": 15,
+                        "path": "./logs/appLog/",
+                        "level": "debug",
+                        "console": false,
+                        "file": false
+                    },
+                    "summary": {
+                        "time": 15,
+                        "path": "./logs/summary/",
+                        "console": false,
+                        "file": false,
+                        "format": "json"
+                    },
+                    "detail": {
+                        "time": 15,
+                        "path": "./logs/detail/",
+                        "console": false,
+                        "file": false,
+                        "rawData": true
+                    },
+                    "stat": {
+                        "time": "1",
+                        "path": "./logs/statPath/",
+                        "console": false,
+                        "file": false,
+                        "mode": 1,
+                        "statInterval": 1,
+                        "flush": false,
+                        "prometheusMode": "multi",
+                        "format": "json_cauldron",
+                        "process": "./conf/stat-process.json"
+                    },
+                    "alarm": {
+                        "time": 1,
+                        "path": "./logs/alarmPath/",
+                        "console": false,
+                        "file": false,
+                        "size ": null,
+                        "process": "./conf/stat-process.json"
+                    },
+                    "recovery": {
+                        "time": 1,
+                        "path": "./logs/recovery/"
+                    }
+                }
+            }
+        }
+    ]
+}
