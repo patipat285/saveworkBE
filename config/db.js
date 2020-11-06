@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 
-mongoose.connect('mongodb://localhost:27017/saveWork', {
+mongoose.connect('mongodb://10.1.2.144:27017/savework', {
   useNewUrlParser: true
 });
 
