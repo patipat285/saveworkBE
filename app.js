@@ -5,7 +5,7 @@ const app = express();
 require("./config/db");
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Allow client to access
 app.use(function(req, res, next) {
