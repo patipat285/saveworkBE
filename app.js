@@ -22,12 +22,12 @@ app.use("/project", apiProject);
 
 
 
-let apiJobType = require("./controller/jobType/index")
+let apiJobType = require("./controller/jobtype/index")
 app.use("/jobType",apiJobType)
 
 
 
-let apiSaveWork = require("./controller/saveWork/index")
+let apiSaveWork = require("./controller/savework/index")
 app.use("/saveWork",apiSaveWork)
 
 
