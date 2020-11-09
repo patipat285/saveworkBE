@@ -1,13 +1,13 @@
 var mongoose = require('mongoose');
 
 
-// mongoose.connect('mongodb://10.1.2.144:27017/savework', {
-//   useNewUrlParser: true
-// });
-
-mongoose.connect('mongodb://localhost:27017/saveWork', {
+mongoose.connect('mongodb://10.1.2.144:27017/savework', {
   useNewUrlParser: true
 });
+
+// mongoose.connect('mongodb://localhost:27017/saveWork', {
+//   useNewUrlParser: true
+// });
 
 mongoose.connection.on("connected", function() {
   console.log("Mongoose default connection open");
