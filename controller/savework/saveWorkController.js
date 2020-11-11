@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const workModel = require("../../model/saveWork");
-
+const moment = require('moment');
 
 
 router.get("/getDataWork", (req, res) => {
@@ -18,7 +18,7 @@ router.get("/getDataWork", (req, res) => {
 
 
 router.get("/getDataWorkforupdate/:_id", (req, res) => {
-  console.log("req.params._id", req.params._id)
+  // console.log("req.params._id", req.params._id)
   workModel.findById(req.params._id, (err, data) => {
     if (err) {
       res.send({
@@ -34,12 +34,12 @@ router.get("/getDataWorkforupdate/:_id", (req, res) => {
 
 router.put("/updateWork/:_id", (req,res)=>{
   let dataWork = {
-    date :req.body.date,
+    date :moment(req.body.date).format(),
     detail : req.body.detail,
     jobType : req.body.jobType,
     project : req.body.project,
-    timeIn : req.body.timeIn,
-    timeOut : req.body.timeOut
+    timeIn : moment(req.body.timeIn).format(),
+    timeOut : moment(req.body.timeOut).format()
    };
 
    workModel.findByIdAndUpdate(
@@ -61,14 +61,25 @@ router.put("/updateWork/:_id", (req,res)=>{
 
 
 router.post("/createWork", (req, res) => {
-console.log("req", req.body)
-    let date = req.body.date;
-    let detail = req.body.detail;
-    let jobType = req.body.jobType;
-    let project = req.body.project;
-    let timeIn = req.body.timeIn;
-    let timeOut = req.body.timeOut;
-    workModel.create(req.body, (err, doc) => {
+
+let data = {
+    date : moment(req.body.date).format(),
+    detail : req.body.detail,
+    jobType : req.body.jobType,
+    project : req.body.project,
+    timeIn : moment(req.body.timeIn).format(),
+    timeOut : moment(req.body.timeOut).format()
+
+}
+console.log("data", data)
+    // let date = moment(req.body.date).format();
+    // let detail = req.body.detail;
+    // let jobType = req.body.jobType;
+    // let project = req.body.project;
+    // let timeIn = moment(req.body.timeIn).format();
+    // let timeOut = moment(req.body.timeOut).format();
+  
+    workModel.create(data, (err, doc) => {
       if (err) {
         res.send({
           result: "failed"
@@ -76,12 +87,7 @@ console.log("req", req.body)
       }
       res.send({
         result: "success",
-        date: date,
-        detail: detail,
-        jobType: jobType,
-        project: project,
-        timeIn: timeIn,
-        timeOut: timeOut,
+      
       });
     });
   });
@@ -105,28 +111,37 @@ router.delete("/deleteDataWork/:_id", (req, res) => {
 
 
 router.post("/searchListWork", async (req, res) => {
-console.log("req", req.body)
+
   try {
-    let data = {};
+    let dataDate = {};
+    
     if(req.body.searchFromDateFrom) {
-      data.date =  new RegExp (req.body.searchFromDateFrom,"i")
+      let a =  moment(req.body.searchFromDateFrom).set({
+        hour:  0,
+        minute: 0,
+        second: 0
+    }).toDate();
+      let b =  moment(req.body.searchFromDateFrom).set({
+        hour:  23,
+        minute: 59,
+        second: 59
+    }).toDate();
+      dataDate.date = { $gte : a, $lte : b}
     }
-
-    // if(req.body.searchFromDateTo) {
-    //   data.date =  new RegExp (req.body.searchFromDateTo,"i")
-    // }
-
+    
     if(req.body.searchFromProject) {
-      data.project =  new RegExp (req.body.searchFromProject,"i")
+      dataDate.project =  new RegExp (req.body.searchFromProject,"i")
     }
-
+    
     if(req.body.searchFromJobType) {
-      data.jobType =  new RegExp (req.body.searchFromJobType,"i")
+      dataDate.jobType =  new RegExp (req.body.searchFromJobType,"i")
     }
+    
+    console.log("dataDate", dataDate)
 
-
+    workModel.find(dataDate,(err , data) =>{
     console.log("data", data)
-    workModel.find(data,(err , data) =>{
+      
     res.send(data)
     });
 

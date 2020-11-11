@@ -1,7 +1,7 @@
 var mongoose = require("mongoose")
 
 var saveWork = mongoose.Schema({
-  date : {type :String},
+  date : {type :Date},
   project : {type : String},
   jobType : {type :String},
   detail : {type : String},
