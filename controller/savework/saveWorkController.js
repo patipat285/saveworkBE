@@ -111,6 +111,7 @@ router.delete("/deleteDataWork/:_id", (req, res) => {
 
 
 router.post("/searchListWork", async (req, res) => {
+console.log("req", req.body)
 
   try {
     let dataDate = {};
